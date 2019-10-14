@@ -1,0 +1,41 @@
+# github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
+github.com/cpuguy83/go-md2man/v2/md2man
+# github.com/ghodss/yaml v1.0.0
+github.com/ghodss/yaml
+# github.com/gorilla/websocket v1.4.1
+github.com/gorilla/websocket
+# github.com/jaypipes/ghw v0.0.0-20190821154021-743802778342
+github.com/jaypipes/ghw
+# github.com/jaypipes/pcidb v0.0.0-20190216132445-4d488f78747b
+github.com/jaypipes/pcidb
+# github.com/mackerelio/go-osstat v0.0.0-20191011055430-af968620273d
+github.com/mackerelio/go-osstat/cpu
+github.com/mackerelio/go-osstat/memory
+github.com/mackerelio/go-osstat/uptime
+# github.com/mitchellh/go-homedir v1.0.0
+github.com/mitchellh/go-homedir
+# github.com/pkg/errors v0.8.1
+github.com/pkg/errors
+# github.com/russross/blackfriday/v2 v2.0.1
+github.com/russross/blackfriday/v2
+# github.com/shurcooL/sanitized_anchor_name v1.0.0
+github.com/shurcooL/sanitized_anchor_name
+# github.com/urfave/cli v1.22.1
+github.com/urfave/cli
+# go.uber.org/atomic v1.4.0
+go.uber.org/atomic
+# go.uber.org/multierr v1.2.0
+go.uber.org/multierr
+# go.uber.org/zap v1.10.0
+go.uber.org/zap
+go.uber.org/zap/buffer
+go.uber.org/zap/internal/bufferpool
+go.uber.org/zap/internal/color
+go.uber.org/zap/internal/exit
+go.uber.org/zap/zapcore
+# golang.org/x/sys v0.0.0-20190410235845-0ad05ae3009d
+golang.org/x/sys/unix
+# gopkg.in/yaml.v2 v2.2.2
+gopkg.in/yaml.v2
+# howett.net/plist v0.0.0-20181124034731-591f970eefbb
+howett.net/plist

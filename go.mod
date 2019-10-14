@@ -10,5 +10,4 @@ require (
 	github.com/urfave/cli v1.22.1
 	go.uber.org/multierr v1.2.0 // indirect
 	go.uber.org/zap v1.10.0
-	golang.org/x/sys v0.0.0-20190410235845-0ad05ae3009d
 )
