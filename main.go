@@ -148,6 +148,7 @@ func (w *Holder) uploadMetricInformation(intervall *time.Ticker) {
 func (w *Holder) SaveMetrics() {
 
 	metrics, err := tracker.GetSystemMetrics()
+
 	if err != nil {
 		logger.Get().Error(err)
 		return
@@ -170,6 +171,32 @@ func (w *Holder) SaveMetrics() {
 				Host: w.itSelfNamedHost,
 			},
 		},
+	}
+
+	disk, err := tracker.GetDisksMetrics()
+	if err == nil {
+		var diskdata []string
+		for _, one := range disk {
+			jsonDiskMetrics, err := json.Marshal(one)
+			if err != nil {
+				logger.Get().Error("Error by parsing disk info: " + err.Error())
+			}
+			diskdata = append(diskdata, string(jsonDiskMetrics))
+
+		}
+		msg = append(msg,
+			Message{
+				Type:          MessageTypeDisk,
+				Data:          diskdata,
+				Time:          time.Now(),
+				SearchIndex:   w.Props.SearchIndex + "_metrics_cumlated",
+				StaticContent: w.Props.StaticContent,
+				Attributes: Attributes{
+					Host: w.itSelfNamedHost,
+				},
+			})
+	} else {
+		logger.Get().Error(err)
 	}
 
 	if len(msg) != 0 {

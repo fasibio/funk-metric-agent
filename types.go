@@ -10,6 +10,9 @@ const (
 	MessageTypeLog MessageType = "LOG"
 	//MessageTypeStats a statsmessage
 	MessageTypeStats MessageType = "STATS"
+
+	//MessageTypeDisk a diskmessage
+	MessageTypeDisk MessageType = "DISK"
 )
 
 // Message is the Lawobject between agent and server
