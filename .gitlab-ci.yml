@@ -52,22 +52,22 @@ buildBin:
      paths:
        - ./bin
 
-# build Docker Image for explizit versions and release candidates
-pushBinToGithub: 
-   stage: pushBinToGithub
-   only:
+
+push: 
+  stage: pushBinToGithub
+  only:
     - /^([0-9]{0,3})\.([0-9]{0,3})\.([0-9]{0,3})$/
     - /^rc_([0-9]{0,3})\.([0-9]{0,3})\.([0-9]{0,3}).*/
-   tags:
-     - dockerfasibio
-   varibales:  
-     - PLUGIN_FILES: "bin/*"
-   image: plugins/github-release
-   artifacts:
-     paths:
-       - ./bin
-
-
+  tags:
+    - dockerfasibio
+  variables:  
+    PLUGIN_FILES: "bin/*"
+  image: plugins/github-release
+  artifacts:
+    paths:
+      - ./bin
+  script:
+    - ls -la
 stages:
   - test
   - sonarqube
