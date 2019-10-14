@@ -43,7 +43,7 @@ variables:
 buildBin: 
    stage: buildBin
    only:
-    - /^([0-9]{0,3})\.([0-9]{0,3})\.([0-9]{0,3})$/
+    - master
    tags:
      - dockerfasibio
    image: golang:1.12.8-alpine3.9
@@ -59,7 +59,7 @@ buildBin:
 push: 
   stage: pushBinToGithub
   only:
-    - /^([0-9]{0,3})\.([0-9]{0,3})\.([0-9]{0,3})$/
+    - master
   tags:
     - dockerfasibio
   image: plugins/github-release
