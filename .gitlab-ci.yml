@@ -69,8 +69,8 @@ push:
   script:
     - ls -la
     - pwd
-    
-    - docker run --rm -e DRONE_BUILD_EVENT=tag -e DRONE_REPO_OWNER=fasibio -e DRONE_REPO_NAME=${CI_PROJECT_NAME} -e DRONE_COMMIT_REF=refs/heads/0.0.${CI_PIPELINE_IID} -e PLUGIN_API_KEY=${PLUGIN_API_KEY} -e PLUGIN_FILES="./release/funk-metric-agent-linux.tar.gz" -v $(pwd):$(pwd) -w $(pwd)  plugins/github-release
+
+    - docker run --rm -e DRONE_BUILD_EVENT=tag -e DRONE_REPO_OWNER=fasibio -e DRONE_REPO_NAME=${CI_PROJECT_NAME} -e DRONE_COMMIT_REF=refs/heads/0.0.${CI_PIPELINE_IID} -e PLUGIN_API_KEY=${PLUGIN_API_KEY} -e PLUGIN_FILES="/builds/fasibio/funk-metric-agent/release/funk-metric-agent-linux.tar.gz" -v $(pwd):$(pwd) -w $(pwd)  plugins/github-release
 stages:
 
   # - test
