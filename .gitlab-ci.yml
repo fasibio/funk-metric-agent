@@ -1,12 +1,4 @@
-variables:
-   RAILS_ENV: test
-   SONAR_NAME: fasibio_metric_agent_
-   SONAR_HOST: https://sonar.server2.fasibio.de
-   DRONE_BUILD_EVENT: tag
-   DRONE_REPO_OWNER: fasibio
-   DRONE_REPO_NAME: ${CI_PROJECT_NAME}
-   DRONE_COMMIT_REF: refs/heads/0.0.${CI_PIPELINE_IID}
-   PLUGIN_FILES: "release/*"
+
 # # Unit and integration tests
 # test:
 #   stage: test
@@ -49,12 +41,20 @@ buildBin:
    image: golang:1.12.8-alpine3.9
    script: 
      - GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -installsuffix cgo -o bin/funk_metric_agent_LINUX_${CI_COMMIT_REF_NAME} .
-     -  mkdir -p release
+     - mkdir -p release
      - tar cfvz ./release/funk-metric-agent-linux.tar.gz bin/*
    artifacts:
      paths:
        - ./release/funk-metric-agent-linux.tar.gz
-
+variables:
+   RAILS_ENV: test
+   SONAR_NAME: fasibio_metric_agent_
+   SONAR_HOST: https://sonar.server2.fasibio.de
+   DRONE_BUILD_EVENT: tag
+   DRONE_REPO_OWNER: fasibio
+   DRONE_REPO_NAME: ${CI_PROJECT_NAME}
+   DRONE_COMMIT_REF: refs/heads/0.0.${CI_PIPELINE_IID}
+   PLUGIN_FILES: "release/*"
 
 push: 
   stage: pushBinToGithub
@@ -62,12 +62,13 @@ push:
     - master
   tags:
     - dockerfasibio
-  image: plugins/github-release
+  image: docker
   artifacts:
     paths:
       - ./release/funk-metric-agent-linux.tar.gz
   script:
     - ls -la
+    - docker run --rm -e DRONE_BUILD_EVENT=tag -e DRONE_REPO_OWNER=fasibio -e DRONE_REPO_NAME=${CI_PROJECT_NAME} -e DRONE_COMMIT_REF=refs/heads/0.0.${CI_PIPELINE_IID} -e PLUGIN_API_KEY=${PLUGIN_API_KEY} -e PLUGIN_FILES="release/*" -v ${pwd}:${pwd} -w ${pwd}  plugins/github-release
 stages:
   # - test
   # - sonarqube
