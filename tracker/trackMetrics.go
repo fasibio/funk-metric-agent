@@ -23,12 +23,13 @@ type CumulateMetrics struct {
 }
 
 type DiskInformation struct {
-	DiskName        string  `json:"disk_name,omitempty"`
-	MountPoint      string  `json:"mount_point,omitempty"`
-	DiskTotal       uint64  `json:"disk_total,omitempty"`
-	DiskFree        uint64  `json:"disk_free,omitempty"`
-	DiskUsed        uint64  `json:"disk_used,omitempty"`
-	DiskUsedPercent float64 `json:"disk_used_percent,omitempty"`
+	DiskName         string  `json:"disk_name,omitempty"`
+	MountPoint       string  `json:"mount_point,omitempty"`
+	DiskTotal        uint64  `json:"disk_total,omitempty"`
+	DiskFree         uint64  `json:"disk_free,omitempty"`
+	DiskUsed         uint64  `json:"disk_used,omitempty"`
+	DiskUsedPercent  float64 `json:"disk_used_percent,omitempty"`
+	DiskAvailPercent float64 `json:"disk_avail_percent,omitempty"`
 }
 
 func GetDisksMetrics() ([]DiskInformation, error) {
@@ -46,7 +47,8 @@ func GetDisksMetrics() ([]DiskInformation, error) {
 					tmp.DiskTotal = diskuse.All
 					tmp.DiskFree = diskuse.Avail
 					tmp.DiskUsed = diskuse.Used
-					tmp.DiskUsedPercent = float64(diskuse.Avail) / float64(diskuse.All) * 100
+					tmp.DiskUsedPercent = float64(diskuse.Used) / float64(diskuse.All) * 100
+					tmp.DiskAvailPercent = float64(diskuse.Avail) / float64(diskuse.All) * 100
 					res = append(res, tmp)
 				}
 			}
@@ -82,7 +84,7 @@ func GetSystemMetrics() (CumulateMetrics, error) {
 	if err == nil {
 		res.CPUTotal = cpustats.Total
 		res.CPUUser = cpustats.User
-		res.CPUPercent = float64(cpustats.Total) / float64(cpustats.User) * 100
+		res.CPUPercent = float64(cpustats.User) / float64(cpustats.Total) * 100
 	} else {
 		logger.Get().Errorw("Error by reading cpu info: " + err.Error())
 	}
