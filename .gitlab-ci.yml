@@ -54,23 +54,21 @@ push:
   stage: pushBinToGithub
   variables: 
    DRONE_BUILD_EVENT: tag
-   DRONE_REPO_OWNER: fasibio
-   DRONE_REPO_NAME: ${CI_PROJECT_NAME}
-   DRONE_COMMIT_REF: refs/heads/0.0.${CI_PIPELINE_IID}
+   GITHUB_REPO_OWNER: fasibio
+   GITHUB_REPO_NAME: ${CI_PROJECT_NAME}
+   GITHUB_COMMIT_REF: refs/heads/0.0.${CI_PIPELINE_IID}
    PLUGIN_FILES: "bin/*"
   only:
     - master
   tags:
     - dockerfasibio
-  image: plugins/github-release
-  artifacts:
-    paths:
-      - bin/funk_metric_agent_LINUX_${CI_PIPELINE_IID}
+  image: socialengine/github-release
   script:
+    - github-release release --user $GITHUB_REPO_OWNER --repo $GITHUB_REPO_NAME --tag $GITHUB_COMMIT_REF --name "Release 0.0.${CI_PIPELINE_IID}" --pre-release --file bin/funk_metric_agent_LINUX_${CI_PIPELINE_IID}
     # - touch bin/test123.txt
     # - echo "hallo" > bin/test123.txt
     # - ls -la bin
-    - pwd
+    # - pwd
     # - docker run --rm -e DRONE_BUILD_EVENT=tag -e DRONE_REPO_OWNER=fasibio -e DRONE_REPO_NAME=${CI_PROJECT_NAME} -e DRONE_COMMIT_REF=refs/heads/0.0.${CI_PIPELINE_IID} -e PLUGIN_API_KEY=${PLUGIN_API_KEY} -e PLUGIN_FILES="bin/*" -v $(pwd):$(pwd) -w $(pwd)  plugins/github-release
 stages:
 
