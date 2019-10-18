@@ -64,7 +64,8 @@ push:
     - dockerfasibio
   image: socialengine/github-release
   script:
-    - github-release release --user $GITHUB_REPO_OWNER --repo $GITHUB_REPO_NAME --tag $GITHUB_COMMIT_REF --name "Release 0.0.${CI_PIPELINE_IID}" --pre-release --file bin/funk_metric_agent_LINUX_${CI_PIPELINE_IID}
+    - github-release release --user $GITHUB_REPO_OWNER --repo $GITHUB_REPO_NAME --tag $GITHUB_COMMIT_REF --name "Release 0.0.${CI_PIPELINE_IID}" --pre-release 
+    - github-release upload --user $GITHUB_REPO_OWNER --repo $GITHUB_REPO_NAME --tag $GITHUB_COMMIT_REF --name "funk_metric_agent_LINUX_${CI_PIPELINE_IID}" --file bin/funk_metric_agent_LINUX_${CI_PIPELINE_IID}
     # - touch bin/test123.txt
     # - echo "hallo" > bin/test123.txt
     # - ls -la bin
