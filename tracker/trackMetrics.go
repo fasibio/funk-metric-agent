@@ -2,6 +2,7 @@ package tracker
 
 import (
 	"syscall"
+	"time"
 
 	"github.com/fasibio/funk-metric-agent/logger"
 	"github.com/jaypipes/ghw"
@@ -32,18 +33,44 @@ type DiskInformation struct {
 	DiskAvailPercent float64 `json:"disk_avail_percent,omitempty"`
 }
 
-func GetDisksMetrics() ([]DiskInformation, error) {
+type MetricsReadAble interface {
+	GetDisksMetrics() ([]DiskInformation, error)
+	GetSystemMetrics() (CumulateMetrics, error)
+}
+
+type StatsReader struct {
+	GetBlock  func(opts ...*ghw.WithOption) (*ghw.BlockInfo, error)
+	GetMemory func() (*memory.Stats, error)
+	GetUptime func() (time.Duration, error)
+	GetCPU    func() (*cpu.Stats, error)
+}
+
+type MetricsReader struct {
+	StatsReader StatsReader
+}
+
+func NewMetricsReader() MetricsReadAble {
+	return &MetricsReader{
+		StatsReader: StatsReader{
+			GetBlock:  ghw.Block,
+			GetMemory: memory.Get,
+			GetUptime: uptime.Get,
+			GetCPU:    cpu.Get,
+		},
+	}
+}
+
+func (m *MetricsReader) GetDisksMetrics() ([]DiskInformation, error) {
 	var res []DiskInformation
-	block, err := ghw.Block()
+	block, err := m.StatsReader.GetBlock()
 	if err == nil {
 		for _, one := range block.Disks {
 			for _, onePartion := range one.Partitions {
 				if !onePartion.IsReadOnly {
-
 					var tmp DiskInformation
 					tmp.DiskName = onePartion.Name
 					tmp.MountPoint = onePartion.MountPoint
-					diskuse := DiskUsage(onePartion.MountPoint)
+					diskuse := diskUsage(onePartion.MountPoint)
 					tmp.DiskTotal = diskuse.All
 					tmp.DiskFree = diskuse.Avail
 					tmp.DiskUsed = diskuse.Used
@@ -52,7 +79,6 @@ func GetDisksMetrics() ([]DiskInformation, error) {
 					res = append(res, tmp)
 				}
 			}
-
 		}
 	} else {
 		logger.Get().Errorw("Error by reading dist block info: " + err.Error())
@@ -61,9 +87,9 @@ func GetDisksMetrics() ([]DiskInformation, error) {
 	return res, nil
 }
 
-func GetSystemMetrics() (CumulateMetrics, error) {
+func (m *MetricsReader) GetSystemMetrics() (CumulateMetrics, error) {
 	res := CumulateMetrics{}
-	memory, err := memory.Get()
+	memory, err := m.StatsReader.GetMemory()
 	if err == nil {
 		res.MemoryTotal = memory.Total
 		res.MemoryUsed = memory.Used
@@ -74,13 +100,13 @@ func GetSystemMetrics() (CumulateMetrics, error) {
 		logger.Get().Errorw("Error by reading mem info: " + err.Error())
 	}
 
-	uptime, err := uptime.Get()
+	uptimes, err := m.StatsReader.GetUptime()
 	if err == nil {
-		res.UptimeHours = uptime.Hours()
+		res.UptimeHours = uptimes.Hours()
 	} else {
 		logger.Get().Errorw("Error by reading uptime: " + err.Error())
 	}
-	cpustats, err := cpu.Get()
+	cpustats, err := m.StatsReader.GetCPU()
 	if err == nil {
 		res.CPUTotal = cpustats.Total
 		res.CPUUser = cpustats.User
@@ -100,7 +126,7 @@ type DiskStatus struct {
 }
 
 // disk usage of path/disk
-func DiskUsage(path string) (disk DiskStatus) {
+func diskUsage(path string) (disk DiskStatus) {
 	fs := syscall.Statfs_t{}
 	err := syscall.Statfs(path, &fs)
 	if err != nil {

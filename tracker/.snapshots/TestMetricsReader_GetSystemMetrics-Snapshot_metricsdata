@@ -1,0 +1,11 @@
+(tracker.CumulateMetrics) {
+  MemoryTotal: (uint64) 123456,
+  MemoryUsed: (uint64) 98715,
+  MemoryCached: (uint64) 12344,
+  MemoryFree: (uint64) 1233456432,
+  MemoryPercent: (float64) 79.95966174183515,
+  UptimeHours: (float64) 160,
+  CPUTotal: (uint64) 217821973,
+  CPUUser: (uint64) 54345,
+  CPUPercent: (float64) 0.024949273597847724
+}

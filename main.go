@@ -90,6 +90,7 @@ type Holder struct {
 	Props           Props
 	itSelfNamedHost string
 	writeToServer   Serverwriter
+	metricReader    tracker.MetricsReadAble
 }
 
 // Props hold all cli given information
@@ -120,6 +121,7 @@ func run(c *cli.Context) error {
 		},
 		itSelfNamedHost: hostname,
 		writeToServer:   WriteToServer,
+		metricReader:    tracker.NewMetricsReader(),
 	}
 	err = holder.openSocketConn(false)
 	for err != nil {
@@ -147,7 +149,7 @@ func (w *Holder) uploadMetricInformation(intervall *time.Ticker) {
 
 func (w *Holder) SaveMetrics() {
 
-	metrics, err := tracker.GetSystemMetrics()
+	metrics, err := w.metricReader.GetSystemMetrics()
 
 	if err != nil {
 		logger.Get().Error(err)
@@ -173,7 +175,7 @@ func (w *Holder) SaveMetrics() {
 		},
 	}
 
-	disk, err := tracker.GetDisksMetrics()
+	disk, err := w.metricReader.GetDisksMetrics()
 	if err == nil {
 		var diskdata []string
 		for _, one := range disk {
