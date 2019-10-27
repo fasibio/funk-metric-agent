@@ -9,6 +9,7 @@ import (
 	"github.com/mackerelio/go-osstat/cpu"
 	"github.com/mackerelio/go-osstat/memory"
 	"github.com/mackerelio/go-osstat/uptime"
+	gopsutilcpu "github.com/shirou/gopsutil/cpu"
 )
 
 type CumulateMetrics struct {
@@ -39,10 +40,11 @@ type MetricsReadAble interface {
 }
 
 type StatsReader struct {
-	GetBlock  func(opts ...*ghw.WithOption) (*ghw.BlockInfo, error)
-	GetMemory func() (*memory.Stats, error)
-	GetUptime func() (time.Duration, error)
-	GetCPU    func() (*cpu.Stats, error)
+	GetBlock      func(opts ...*ghw.WithOption) (*ghw.BlockInfo, error)
+	GetMemory     func() (*memory.Stats, error)
+	GetUptime     func() (time.Duration, error)
+	GetCPU        func() (*cpu.Stats, error)
+	GetCPUPercent func() (float64, error)
 }
 
 type MetricsReader struct {
@@ -56,6 +58,10 @@ func NewMetricsReader() MetricsReadAble {
 			GetMemory: memory.Get,
 			GetUptime: uptime.Get,
 			GetCPU:    cpu.Get,
+			GetCPUPercent: func() (float64, error) {
+				percentage, err := gopsutilcpu.Percent(0, false)
+				return percentage[0], err
+			},
 		},
 	}
 }
@@ -110,7 +116,8 @@ func (m *MetricsReader) GetSystemMetrics() (CumulateMetrics, error) {
 	if err == nil {
 		res.CPUTotal = cpustats.Total
 		res.CPUUser = cpustats.User
-		res.CPUPercent = float64(cpustats.User) / float64(cpustats.Total) * 100
+		percentage, _ := m.StatsReader.GetCPUPercent()
+		res.CPUPercent = percentage
 	} else {
 		logger.Get().Errorw("Error by reading cpu info: " + err.Error())
 	}

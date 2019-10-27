@@ -7,5 +7,5 @@
   UptimeHours: (float64) 160,
   CPUTotal: (uint64) 217821973,
   CPUUser: (uint64) 54345,
-  CPUPercent: (float64) 0.024949273597847724
+  CPUPercent: (float64) 12.46
 }

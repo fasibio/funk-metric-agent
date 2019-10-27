@@ -42,6 +42,10 @@ func (s *StatsReaderMock) getCPUMock() (*cpu.Stats, error) {
 	}, nil
 }
 
+func (s *StatsReaderMock) GetCPUPercent() (float64, error) {
+	return 12.46, nil
+}
+
 func TestMetricsReader_GetSystemMetrics(t *testing.T) {
 	type fields struct {
 		StatsReader StatsReader
@@ -61,10 +65,11 @@ func TestMetricsReader_GetSystemMetrics(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			m := &MetricsReader{
 				StatsReader: StatsReader{
-					GetBlock:  tt.statsreader.getBlockMock,
-					GetMemory: tt.statsreader.getMemoryMock,
-					GetUptime: tt.statsreader.getUptimeMock,
-					GetCPU:    tt.statsreader.getCPUMock,
+					GetBlock:      tt.statsreader.getBlockMock,
+					GetMemory:     tt.statsreader.getMemoryMock,
+					GetUptime:     tt.statsreader.getUptimeMock,
+					GetCPU:        tt.statsreader.getCPUMock,
+					GetCPUPercent: tt.statsreader.GetCPUPercent,
 				},
 			}
 			got, err := m.GetSystemMetrics()
