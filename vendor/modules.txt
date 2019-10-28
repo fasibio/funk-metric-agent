@@ -1,5 +1,7 @@
 # bou.ke/monkey v1.0.1
 bou.ke/monkey
+# github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d
+github.com/StackExchange/wmi
 # github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 github.com/bradleyjkemp/cupaloy
 # github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
@@ -8,6 +10,9 @@ github.com/cpuguy83/go-md2man/v2/md2man
 github.com/davecgh/go-spew/spew
 # github.com/ghodss/yaml v1.0.0
 github.com/ghodss/yaml
+# github.com/go-ole/go-ole v1.2.4
+github.com/go-ole/go-ole
+github.com/go-ole/go-ole/oleutil
 # github.com/gorilla/websocket v1.4.1
 github.com/gorilla/websocket
 # github.com/jaypipes/ghw v0.0.0-20190821154021-743802778342
@@ -26,6 +31,9 @@ github.com/pkg/errors
 github.com/pmezard/go-difflib/difflib
 # github.com/russross/blackfriday/v2 v2.0.1
 github.com/russross/blackfriday/v2
+# github.com/shirou/gopsutil v2.19.9+incompatible
+github.com/shirou/gopsutil/cpu
+github.com/shirou/gopsutil/internal/common
 # github.com/shurcooL/sanitized_anchor_name v1.0.0
 github.com/shurcooL/sanitized_anchor_name
 # github.com/tkuchiki/faketime v0.1.1
@@ -38,13 +46,14 @@ go.uber.org/atomic
 go.uber.org/multierr
 # go.uber.org/zap v1.10.0
 go.uber.org/zap
-go.uber.org/zap/buffer
+go.uber.org/zap/zapcore
 go.uber.org/zap/internal/bufferpool
+go.uber.org/zap/buffer
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
-go.uber.org/zap/zapcore
 # golang.org/x/sys v0.0.0-20190410235845-0ad05ae3009d
 golang.org/x/sys/unix
+golang.org/x/sys/windows
 # gopkg.in/yaml.v2 v2.2.2
 gopkg.in/yaml.v2
 # howett.net/plist v0.0.0-20181124034731-591f970eefbb
