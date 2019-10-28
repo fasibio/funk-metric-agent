@@ -134,8 +134,8 @@ func run(c *cli.Context) error {
 		return err
 	}
 	statsTicker := time.NewTicker(time.Duration(statsSecond) * time.Second)
+	logger.Get().Infow("Funk-Metric-Agent is running")
 	holder.uploadMetricInformation(statsTicker)
-
 	return nil
 }
 
