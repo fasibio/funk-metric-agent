@@ -4,6 +4,7 @@ import (
 	"syscall"
 	"time"
 
+	sigar "github.com/cloudfoundry/gosigar"
 	"github.com/fasibio/funk-metric-agent/logger"
 	"github.com/jaypipes/ghw"
 	"github.com/mackerelio/go-osstat/cpu"
@@ -67,24 +68,47 @@ func NewMetricsReader() MetricsReadAble {
 }
 
 func (m *MetricsReader) GetDisksMetrics() ([]DiskInformation, error) {
+	fslist := sigar.FileSystemList{}
+	fslist.Get()
 	var res []DiskInformation
 	block, err := m.StatsReader.GetBlock()
 	if err == nil {
 		for _, one := range block.Disks {
-			for _, onePartion := range one.Partitions {
-				if !onePartion.IsReadOnly {
-					var tmp DiskInformation
-					tmp.DiskName = onePartion.Name
-					tmp.MountPoint = onePartion.MountPoint
-					diskuse := diskUsage(onePartion.MountPoint)
-					tmp.DiskTotal = diskuse.All
-					tmp.DiskFree = diskuse.Avail
-					tmp.DiskUsed = diskuse.Used
-					tmp.DiskUsedPercent = float64(diskuse.Used) / float64(diskuse.All) * 100
-					tmp.DiskAvailPercent = float64(diskuse.Avail) / float64(diskuse.All) * 100
-					res = append(res, tmp)
+			if len(one.Partitions) == 0 {
+
+				for _, f := range fslist.List {
+					if f.DevName == "/dev/"+one.Name {
+						var tmp DiskInformation
+						tmp.DiskName = one.Name
+						tmp.MountPoint = f.DirName
+						diskuse := diskUsage(f.DirName)
+						tmp.DiskTotal = diskuse.All
+						tmp.DiskFree = diskuse.Avail
+						tmp.DiskUsed = diskuse.Used
+						tmp.DiskUsedPercent = float64(diskuse.Used) / float64(diskuse.All) * 100
+						tmp.DiskAvailPercent = float64(diskuse.Avail) / float64(diskuse.All) * 100
+						logger.Get().Info(tmp)
+						res = append(res, tmp)
+					}
+				}
+
+			} else {
+				for _, onePartion := range one.Partitions {
+					if !onePartion.IsReadOnly {
+						var tmp DiskInformation
+						tmp.DiskName = onePartion.Name
+						tmp.MountPoint = onePartion.MountPoint
+						diskuse := diskUsage(onePartion.MountPoint)
+						tmp.DiskTotal = diskuse.All
+						tmp.DiskFree = diskuse.Avail
+						tmp.DiskUsed = diskuse.Used
+						tmp.DiskUsedPercent = float64(diskuse.Used) / float64(diskuse.All) * 100
+						tmp.DiskAvailPercent = float64(diskuse.Avail) / float64(diskuse.All) * 100
+						res = append(res, tmp)
+					}
 				}
 			}
+
 		}
 	} else {
 		logger.Get().Errorw("Error by reading dist block info: " + err.Error())

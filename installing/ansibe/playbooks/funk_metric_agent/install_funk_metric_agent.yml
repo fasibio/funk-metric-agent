@@ -1,0 +1,28 @@
+---
+- hosts: all
+  vars_files: 
+    - vars/settings.yml
+  tasks: 
+    - name: Create destination directory
+      file:
+        path: /usr/lokal/funk_metric_agent
+        state: directory
+        mode: '0755'
+
+    - name: Download binary {{ DOWNLOADURL }}
+      get_url:
+        url: "{{ DOWNLOADURL }}"
+        dest: /usr/lokal/funk_metric_agent/funk_metric_agent_LINUX_{{ VERSION }}
+        mode: '0755'
+
+    - name: Copy init.d file
+      template: 
+        src: ./funkmetricagent.j2
+        dest: /etc/init.d/funkmetricagent
+        mode: '0755'
+    
+    - name: Enable service funkmetricagent, and start service
+      service:
+        name: funkmetricagent
+        enabled: yes
+        state: started

@@ -1,0 +1,5 @@
+--- 
+- hosts: all
+
+- name: Install funk metric agent
+  import_playbook: playbooks/funk_metric_agent/install_funk_metric_agent.yml host=all
