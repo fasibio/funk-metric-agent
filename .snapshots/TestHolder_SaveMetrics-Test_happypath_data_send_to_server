@@ -1,7 +1,7 @@
 ([]main.Message) (len=2) {
   (main.Message) {
     Time: (time.Time) 2009-11-10 23:00:00 +0000 UTC,
-    Type: (main.MessageType) (len=5) "STATS",
+    Type: (main.MessageType) (len=13) "STATS_METRIC\t",
     Data: ([]string) (len=1) {
       (string) (len=210) "{\"memory_total\":28329084,\"memory_used\":28490210,\"memory_cached\":283921778,\"memory_free\":2374878972,\"memory_percent\":12.2,\"uptime_hours\":21600000000000,\"cpu_total\":893819038,\"cpu_user\":238498,\"cpu_percent\":12.1}"
     },

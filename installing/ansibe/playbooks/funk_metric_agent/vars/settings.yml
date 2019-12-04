@@ -1,5 +1,5 @@
-VERSION: 679
-DOWNLOADURL: https://github.com/fasibio/funk-metric-agent/releases/download/refs%2Fheads%2F0.0.678/funk_metric_agent_LINUX_679
+VERSION: 680
+DOWNLOADURL: https://github.com/fasibio/funk-metric-agent/releases/download/refs%2Fheads%2F0.0.678/funk_metric_agent_LINUX_680
 FUNK_ARGS: ''
 SEARCHINDEX: host
 FUNKSERVER: ws://localhost:3000

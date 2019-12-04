@@ -164,7 +164,7 @@ func (w *Holder) SaveMetrics() {
 	data = append(data, string(jsonMetrics))
 	msg := []Message{
 		Message{
-			Type:          MessageTypeStats,
+			Type:          MessageTypeStatsMetric,
 			Data:          data,
 			Time:          time.Now(),
 			SearchIndex:   w.Props.SearchIndex + "_metrics_cumlated",

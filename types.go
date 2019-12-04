@@ -9,8 +9,8 @@ const (
 	// MessageTypeLog a logmessage
 	MessageTypeLog MessageType = "LOG"
 	//MessageTypeStats a statsmessage
-	MessageTypeStats MessageType = "STATS"
-
+	MessageTypeStats       MessageType = "STATS"
+	MessageTypeStatsMetric MessageType = "STATS_METRIC	"
 	//MessageTypeDisk a diskmessage
 	MessageTypeDisk MessageType = "DISK"
 )
